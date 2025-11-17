@@ -230,31 +230,31 @@ function Customize() {
         </div>
       </header>
 
-      <main className="flex-1 w-full px-4 py-6 overflow-y-auto">
-        <div className="max-w-5xl mx-auto h-full">
+      <main className="flex-1 w-full px-2 md:px-4 py-3 md:py-6 overflow-hidden">
+        <div className="max-w-5xl mx-auto h-full overflow-hidden">
           {step === 1 && (
-            <div className="flex flex-col h-full space-y-4">
+            <div className="flex flex-col h-full space-y-3 md:space-y-4 overflow-hidden">
               <div className="text-center flex-shrink-0">
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 mb-1 md:mb-2">
                   Laden Sie Ihr Bild hoch
                 </h1>
-                <p className="text-sm md:text-base text-slate-600">
+                <p className="text-xs md:text-sm lg:text-base text-slate-600">
                   Wählen Sie den gewünschten Ausschnitt ({isPortrait ? '600x800' : '800x600'} Pixel)
                 </p>
               </div>
 
               {!selectedImage ? (
                 <Card className="border-2 border-dashed flex-1 flex items-center justify-center">
-                  <CardContent className="py-12">
-                    <label className="flex flex-col items-center gap-4 cursor-pointer">
-                      <div className="h-24 w-24 rounded-2xl bg-slate-100 flex items-center justify-center">
-                        <Upload className="h-12 w-12 text-slate-400" />
+                  <CardContent className="py-8 md:py-12">
+                    <label className="flex flex-col items-center gap-3 md:gap-4 cursor-pointer">
+                      <div className="h-16 w-16 md:h-24 md:w-24 rounded-2xl bg-slate-100 flex items-center justify-center">
+                        <Upload className="h-8 w-8 md:h-12 md:w-12 text-slate-400" />
                       </div>
                       <div className="text-center">
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-base md:text-lg font-semibold text-slate-900">
                           Klicken Sie zum Hochladen
                         </p>
-                        <p className="text-sm text-slate-500 mt-1">
+                        <p className="text-xs md:text-sm text-slate-500 mt-1">
                           PNG, JPG bis zu 10MB
                         </p>
                       </div>
@@ -270,41 +270,41 @@ function Customize() {
               ) : (
                 <>
                   <Card className="flex-1 overflow-hidden">
-                    <CardContent className="pt-4 h-full flex items-center justify-center">
-                      <div className="max-h-full overflow-auto">
-                        <ReactCrop
-                          crop={crop}
-                          onChange={(c) => setCrop(c)}
-                          onComplete={(c) => setCompletedCrop(c)}
-                          aspect={isPortrait ? 600 / 800 : 800 / 600}
-                        >
-                          <img
-                            ref={imgRef}
-                            src={selectedImage}
-                            alt="Upload"
-                            style={{ 
-                              maxHeight: 'calc(100vh - 300px)',
-                              width: 'auto'
-                            }}
-                          />
-                        </ReactCrop>
-                      </div>
+                    <CardContent className="pt-2 md:pt-4 h-full flex items-center justify-center overflow-hidden">
+                      <ReactCrop
+                        crop={crop}
+                        onChange={(c) => setCrop(c)}
+                        onComplete={(c) => setCompletedCrop(c)}
+                        aspect={isPortrait ? 600 / 800 : 800 / 600}
+                      >
+                        <img
+                          ref={imgRef}
+                          src={selectedImage}
+                          alt="Upload"
+                          style={{ 
+                            maxHeight: 'calc(100vh - 250px)',
+                            width: 'auto',
+                            touchAction: 'none'
+                          }}
+                        />
+                      </ReactCrop>
                     </CardContent>
                   </Card>
 
-                  <div className="flex gap-3 flex-shrink-0">
+                  <div className="flex gap-2 md:gap-3 flex-shrink-0 flex-wrap">
                     <Button
                       variant="outline"
                       onClick={() => setSelectedImage(null)}
+                      className="text-base md:text-sm px-5 py-3 md:py-2"
                     >
                       Neues Bild
                     </Button>
                     <Button
                       variant="outline"
                       onClick={rotateImage}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 text-base md:text-sm px-5 py-3 md:py-2"
                     >
-                      <RotateCw className="h-4 w-4" />
+                      <RotateCw className="h-5 w-5 md:h-4 md:w-4" />
                       {isPortrait ? 'Querformat' : 'Hochformat'}
                     </Button>
                     <Button
@@ -316,7 +316,7 @@ function Customize() {
                         }
                       }}
                       disabled={!completedCrop}
-                      className="flex-1 bg-slate-900 hover:bg-slate-800"
+                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2"
                     >
                       Weiter
                     </Button>
@@ -327,89 +327,106 @@ function Customize() {
           )}
 
           {step === 2 && (
-            <div className="flex flex-col h-full space-y-4">
+            <div className="flex flex-col h-full space-y-4 md:space-y-6 overflow-hidden">
               <div className="text-center flex-shrink-0">
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 mb-1 md:mb-2">
                   Wählen Sie Ihre Rahmenfarbe
                 </h1>
-                <p className="text-sm md:text-base text-slate-600">
+                <p className="text-xs md:text-sm lg:text-base text-slate-600">
                   Schwarz oder Weiß - Ihre Wahl
                 </p>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-4">
-                <div className="flex justify-center">
-                  <img 
-                    src={frameColorsImg} 
-                    alt="Rahmenfarben Optionen" 
-                    className="w-full max-w-2xl rounded-xl shadow-lg"
-                  />
-                </div>
+              <div className="flex-1 flex items-center justify-center overflow-hidden py-2 md:py-4">
+                <div className="w-full max-w-5xl mx-auto px-2 md:px-4">
+                  <div className="grid md:grid-cols-2 gap-4 md:gap-8 items-center">
+                    {/* Beispielbild nur auf Desktop */}
+                    <div className="hidden md:block">
+                      <img 
+                        src={frameColorsImg} 
+                        alt="Rahmenfarben Beispiel" 
+                        className="w-full rounded-2xl shadow-xl"
+                      />
+                    </div>
 
-                <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                  <Card
-                    className={`cursor-pointer border-2 transition-all ${
-                      frameColor === 'black'
-                        ? 'border-slate-900 shadow-lg'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                    onClick={() => setFrameColor('black')}
-                  >
-                    <CardContent className="pt-6 pb-6">
-                      <div className="aspect-square bg-slate-900 rounded-lg mb-3 flex items-center justify-center relative">
-                        {frameColor === 'black' && (
-                          <div className="absolute top-2 right-2 bg-white rounded-full p-1">
-                            <Check className="h-5 w-5 text-slate-900" />
+                    {/* Rahmenfarben Auswahl */}
+                    <div className="space-y-3">
+                      <button
+                        className={`w-full p-4 md:p-5 rounded-xl border-2 transition-all ${
+                          frameColor === 'black'
+                            ? 'border-slate-900 bg-slate-50 shadow-lg'
+                            : 'border-slate-200 bg-white hover:border-slate-400 hover:shadow-md'
+                        }`}
+                        onClick={() => setFrameColor('black')}
+                      >
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-900 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
+                            <Frame className="h-6 w-6 md:h-8 md:w-8 text-white" />
                           </div>
-                        )}
-                        <Frame className="h-12 w-12 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-center">Schwarzer Rahmen</h3>
-                    </CardContent>
-                  </Card>
+                          <div className="flex-1 text-left">
+                            <h3 className="text-base md:text-lg font-semibold text-slate-900">Schwarzer Rahmen</h3>
+                            <p className="text-xs md:text-sm text-slate-600">Klassisch und elegant</p>
+                          </div>
+                          {frameColor === 'black' && (
+                            <div className="bg-slate-900 rounded-full p-1.5 flex-shrink-0">
+                              <Check className="h-4 w-4 text-white" />
+                            </div>
+                          )}
+                        </div>
+                      </button>
 
-                  <Card
-                    className={`cursor-pointer border-2 transition-all ${
-                      frameColor === 'white'
-                        ? 'border-slate-900 shadow-lg'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                    onClick={() => setFrameColor('white')}
-                  >
-                    <CardContent className="pt-6 pb-6">
-                      <div className="aspect-square bg-white border-2 border-slate-200 rounded-lg mb-3 flex items-center justify-center relative">
-                        {frameColor === 'white' && (
-                          <div className="absolute top-2 right-2 bg-slate-900 rounded-full p-1">
-                            <Check className="h-5 w-5 text-white" />
+                      <button
+                        className={`w-full p-4 md:p-5 rounded-xl border-2 transition-all ${
+                          frameColor === 'white'
+                            ? 'border-slate-900 bg-slate-50 shadow-lg'
+                            : 'border-slate-200 bg-white hover:border-slate-400 hover:shadow-md'
+                        }`}
+                        onClick={() => setFrameColor('white')}
+                      >
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <div className="w-12 h-12 md:w-16 md:h-16 bg-white border-2 border-slate-300 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
+                            <Frame className="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
                           </div>
-                        )}
-                        <Frame className="h-12 w-12 text-slate-900" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-center">Weißer Rahmen</h3>
-                    </CardContent>
-                  </Card>
+                          <div className="flex-1 text-left">
+                            <h3 className="text-base md:text-lg font-semibold text-slate-900">Weißer Rahmen</h3>
+                            <p className="text-xs md:text-sm text-slate-600">Modern und hell</p>
+                          </div>
+                          {frameColor === 'white' && (
+                            <div className="bg-slate-900 rounded-full p-1.5 flex-shrink-0">
+                              <Check className="h-4 w-4 text-white" />
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex gap-3 flex-shrink-0">
+              <div className="flex gap-2 md:gap-3 flex-shrink-0">
                 <Button
                   variant="outline"
                   onClick={() => setStep(1)}
+                  className="px-5 md:px-6 text-base md:text-sm py-3 md:py-3"
                 >
                   Zurück
                 </Button>
                 <Button
                   onClick={handleCheckout}
                   disabled={loading}
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 text-lg py-6"
+                  className="flex-1 bg-slate-900 hover:bg-slate-800 py-3 md:py-3 text-base md:text-sm"
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                      Wird verarbeitet...
+                      <Loader2 className="h-5 w-5 md:h-4 md:w-4 mr-2 animate-spin" />
+                      <span>Wird verarbeitet...</span>
                     </>
                   ) : (
-                    'Zur Kasse - €29,90'
+                    <>
+                      <span className="font-semibold">Zur Kasse</span>
+                      <span className="mx-2">·</span>
+                      <span>€29,90</span>
+                    </>
                   )}
                 </Button>
               </div>
