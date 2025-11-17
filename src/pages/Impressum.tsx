@@ -33,7 +33,7 @@ export default function Impressum() {
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Kontakt</h2>
               <p className="text-slate-700">
                 Telefon: +49 (0) 123 456789<br />
-                E-Mail: info@lightpicture-3d.com
+                E-Mail: info@lightpicture-3d.de
               </p>
             </section>
 

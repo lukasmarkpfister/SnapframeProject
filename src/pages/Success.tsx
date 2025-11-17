@@ -46,7 +46,7 @@ export default function Success() {
           </div>
 
           <p className="text-xs text-slate-500">
-            Fragen? Kontaktieren Sie uns unter support@lightpicture-3d.com
+            Fragen? Kontaktieren Sie uns unter support@lightpicture-3d.de
           </p>
         </CardContent>
       </Card>

@@ -50,13 +50,13 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:info@lightpicture-3d.com" className="hover:text-slate-900 transition-colors">
-                  info@lightpicture-3d.com
+                <a href="mailto:info@lightpicture-3d.de" className="hover:text-slate-900 transition-colors">
+                  info@lightpicture-3d.de
                 </a>
               </li>
               <li>
-                <a href="mailto:support@lightpicture-3d.com" className="hover:text-slate-900 transition-colors">
-                  support@lightpicture-3d.com
+                <a href="mailto:support@lightpicture-3d.de" className="hover:text-slate-900 transition-colors">
+                  support@lightpicture-3d.de
                 </a>
               </li>
             </ul>
@@ -102,7 +102,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} LightPicture. Alle Rechte vorbehalten.
           </p>
           <p className="text-xs text-slate-500 mt-2">
-            lightpicture-3d.com
+            lightpicture-3d.de
           </p>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function AGB() {
               <p className="text-slate-700">
                 Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge über die Lieferung von Waren, 
                 die ein Verbraucher oder Unternehmer (im Folgenden „Kunde") mit LightPicture GmbH (im Folgenden „Verkäufer") 
-                über die Website lightpicture-3d.com abschließt.
+                über die Website lightpicture-3d.de abschließt.
               </p>
             </section>
 

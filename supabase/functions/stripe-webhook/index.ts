@@ -68,6 +68,7 @@ Deno.serve(async (req: Request) => {
         if (order?.customer_email && order.customer_email !== '') {
           const resendApiKey = Deno.env.get("RESEND_API_KEY");
           if (resendApiKey) {
+            // Send confirmation to customer
             await fetch("https://api.resend.com/emails", {
               method: "POST",
               headers: {
@@ -75,7 +76,7 @@ Deno.serve(async (req: Request) => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                from: "LightPicture <bestellungen@lightpicture-3d.com>",
+                from: "LightPicture <bestellungen@lightpicture-3d.de>",
                 to: order.customer_email,
                 subject: "Bestellbestätigung - LightPicture",
                 html: `
@@ -90,8 +91,44 @@ Deno.serve(async (req: Request) => {
                   </ul>
                   <p>Wir beginnen umgehend mit der Produktion Ihres personalisierten 3D-Bilderrahmens.</p>
                   <p>Sie erhalten eine weitere E-Mail, sobald Ihre Bestellung versendet wird.</p>
-                  <p>Bei Fragen erreichen Sie uns unter support@lightpicture-3d.com</p>
+                  <p>Bei Fragen erreichen Sie uns unter support@lightpicture-3d.de</p>
                   <p>Viele Grüße,<br>Ihr LightPicture Team</p>
+                `,
+              }),
+            });
+
+            // Send internal notification to business owner
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${resendApiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                from: "LightPicture <bestellungen@lightpicture-3d.de>",
+                to: "versandhandellukaspfister@gmail.com",
+                subject: `🆕 Neue Bestellung #${orderId.slice(0, 8)}`,
+                html: `
+                  <h1>Neue Bestellung eingegangen!</h1>
+                  <h2>Bestelldetails:</h2>
+                  <ul>
+                    <li><strong>Bestellung-ID:</strong> ${orderId}</li>
+                    <li><strong>Kurz-ID:</strong> ${orderId.slice(0, 8)}</li>
+                    <li><strong>Status:</strong> Bezahlt</li>
+                    <li><strong>Rahmenfarbe:</strong> ${order.frame_color === 'black' ? 'Schwarz' : 'Weiß'}</li>
+                    <li><strong>Preis:</strong> 29,90 €</li>
+                    <li><strong>Stripe Session:</strong> ${session.id}</li>
+                  </ul>
+                  <h2>Kundeninformationen:</h2>
+                  <ul>
+                    <li><strong>Name:</strong> ${order.customer_name || 'Nicht angegeben'}</li>
+                    <li><strong>E-Mail:</strong> ${order.customer_email}</li>
+                  </ul>
+                  <h2>Bild:</h2>
+                  <p><a href="${order.image_url}" target="_blank" style="display: inline-block; padding: 10px 20px; background: #0070f3; color: white; text-decoration: none; border-radius: 5px;">📥 Bild herunterladen</a></p>
+                  <img src="${order.image_url}" alt="Bestelltes Bild" style="max-width: 400px; margin-top: 20px; border: 1px solid #ddd; border-radius: 8px;" />
+                  <hr style="margin: 30px 0;" />
+                  <p style="color: #666; font-size: 12px;">Erstellt: ${new Date(order.created_at).toLocaleString('de-DE')}</p>
                 `,
               }),
             });

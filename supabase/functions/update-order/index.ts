@@ -80,7 +80,7 @@ Deno.serve(async (req: Request) => {
             <p><strong>Bestellung-ID:</strong> ${orderId.slice(0, 8)}</p>
             ${trackingNumber ? `<p><strong>Sendungsnummer:</strong> ${trackingNumber}</p>` : ''}
             <p>Die voraussichtliche Lieferzeit beträgt 2-3 Werktage.</p>
-            <p>Bei Fragen erreichen Sie uns unter support@lightpicture-3d.com</p>
+            <p>Bei Fragen erreichen Sie uns unter support@lightpicture-3d.de</p>
             <p>Viele Grüße,<br>Ihr LightPicture Team</p>
           `;
         } else if (status === "completed") {
@@ -91,7 +91,7 @@ Deno.serve(async (req: Request) => {
             <p>Ihre Bestellung wurde erfolgreich zugestellt.</p>
             <p><strong>Bestellung-ID:</strong> ${orderId.slice(0, 8)}</p>
             <p>Wir hoffen, Sie haben Freude an Ihrem LightPicture!</p>
-            <p>Bei Fragen oder Feedback erreichen Sie uns unter support@lightpicture-3d.com</p>
+            <p>Bei Fragen oder Feedback erreichen Sie uns unter support@lightpicture-3d.de</p>
             <p>Viele Grüße,<br>Ihr LightPicture Team</p>
           `;
         }
@@ -104,7 +104,7 @@ Deno.serve(async (req: Request) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              from: "LightPicture <bestellungen@lightpicture-3d.com>",
+              from: "LightPicture <bestellungen@lightpicture-3d.de>",
               to: data.customer_email,
               subject: emailSubject,
               html: emailBody,

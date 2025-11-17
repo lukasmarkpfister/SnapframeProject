@@ -37,7 +37,7 @@ export default function Widerruf() {
                   Musterstraße 123<br />
                   12345 Musterstadt<br />
                   Deutschland<br />
-                  E-Mail: widerruf@lightpicture-3d.com<br />
+                  E-Mail: widerruf@lightpicture-3d.de<br />
                   Telefon: +49 (0) 123 456789
                 </p>
               </div>
@@ -110,7 +110,7 @@ export default function Widerruf() {
                   <p>An LightPicture GmbH</p>
                   <p>Musterstraße 123</p>
                   <p>12345 Musterstadt</p>
-                  <p>E-Mail: widerruf@lightpicture-3d.com</p>
+                  <p>E-Mail: widerruf@lightpicture-3d.de</p>
                   <p className="mt-4">Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)</p>
                   <p className="mt-4">- Bestellt am (*)/erhalten am (*)</p>
                   <p>- Name des/der Verbraucher(s)</p>
