@@ -1,12 +1,11 @@
 import { useState, useRef } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
-import { Upload, Frame, Loader2, Check } from 'lucide-react';
+import { Upload, Frame, Loader2, Check, RotateCw } from 'lucide-react';
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { createClient } from '@supabase/supabase-js';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
 import frameColorsImg from '../static/framecolors.jpeg';
 
 const supabase = createClient(
@@ -20,6 +19,8 @@ function Customize() {
   const [step, setStep] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob | null>(null);
+  const [rotation, setRotation] = useState(0);
+  const [isPortrait, setIsPortrait] = useState(false);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 90,
@@ -38,9 +39,54 @@ function Customize() {
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result as string);
+        setRotation(0);
+        setIsPortrait(false);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const rotateImage = () => {
+    setRotation((prev) => (prev + 90) % 360);
+    const newIsPortrait = !isPortrait;
+    setIsPortrait(newIsPortrait);
+    
+    // Get image dimensions to calculate optimal crop
+    if (imgRef.current) {
+      const img = imgRef.current;
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      const imgAspect = imgWidth / imgHeight;
+      
+      // Target aspect ratios
+      const targetAspect = newIsPortrait ? (600 / 800) : (800 / 600); // 0.75 or 1.333
+      
+      let cropWidth, cropHeight;
+      
+      if (imgAspect > targetAspect) {
+        // Image is wider than target - fit to height
+        cropHeight = 90;
+        cropWidth = (cropHeight * targetAspect * imgHeight) / imgWidth;
+      } else {
+        // Image is taller than target - fit to width
+        cropWidth = 90;
+        cropHeight = (cropWidth * imgWidth) / (targetAspect * imgHeight);
+      }
+      
+      // Center the crop
+      const x = (100 - cropWidth) / 2;
+      const y = (100 - cropHeight) / 2;
+      
+      setCrop({
+        unit: '%',
+        width: cropWidth,
+        height: cropHeight,
+        x: x,
+        y: y,
+      });
+    }
+    
+    setCompletedCrop(null);
   };
 
   const getCroppedImg = (image: HTMLImageElement, crop: PixelCrop): Promise<Blob> => {
@@ -48,13 +94,45 @@ function Customize() {
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
 
-    canvas.width = 800;
-    canvas.height = 600;
+    // Set canvas dimensions based on rotation
+    const outputWidth = 800;
+    const outputHeight = 600;
+    
+    if (rotation === 90 || rotation === 270) {
+      canvas.width = outputHeight;
+      canvas.height = outputWidth;
+    } else {
+      canvas.width = outputWidth;
+      canvas.height = outputHeight;
+    }
+
     const ctx = canvas.getContext('2d');
 
     if (!ctx) {
       return Promise.reject(new Error('No 2d context'));
     }
+
+    // Calculate center for rotation
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    // Apply rotation transformation
+    ctx.translate(centerX, centerY);
+    ctx.rotate((rotation * Math.PI) / 180);
+
+    // Draw image with proper dimensions based on rotation
+    let drawWidth, drawHeight, drawX, drawY;
+    
+    if (rotation === 90 || rotation === 270) {
+      drawWidth = outputHeight;
+      drawHeight = outputWidth;
+    } else {
+      drawWidth = outputWidth;
+      drawHeight = outputHeight;
+    }
+    
+    drawX = -drawWidth / 2;
+    drawY = -drawHeight / 2;
 
     ctx.drawImage(
       image,
@@ -62,10 +140,10 @@ function Customize() {
       crop.y * scaleY,
       crop.width * scaleX,
       crop.height * scaleY,
-      0,
-      0,
-      800,
-      600
+      drawX,
+      drawY,
+      drawWidth,
+      drawHeight
     );
 
     return new Promise((resolve, reject) => {
@@ -164,8 +242,8 @@ function Customize() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+    <div className="h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col overflow-hidden">
+      <header className="border-b bg-white/80 backdrop-blur-sm z-50 flex-shrink-0">
         <div className="w-full px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Frame className="h-6 w-6 text-slate-900" />
@@ -179,22 +257,22 @@ function Customize() {
         </div>
       </header>
 
-      <main className="flex-1 w-full px-4 py-12">
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-1 w-full px-4 py-6 overflow-y-auto">
+        <div className="max-w-5xl mx-auto h-full">
           {step === 1 && (
-            <div className="space-y-8 min-h-[calc(100vh-12rem)]">
-              <div className="text-center">
-                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            <div className="flex flex-col h-full space-y-4">
+              <div className="text-center flex-shrink-0">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
                   Laden Sie Ihr Bild hoch
                 </h1>
-                <p className="text-base md:text-lg text-slate-600">
+                <p className="text-sm md:text-base text-slate-600">
                   Wählen Sie den gewünschten Ausschnitt (800x600 Pixel)
                 </p>
               </div>
 
               {!selectedImage ? (
-                <Card className="border-2 border-dashed">
-                  <CardContent className="pt-12 pb-12">
+                <Card className="border-2 border-dashed flex-1 flex items-center justify-center">
+                  <CardContent className="py-12">
                     <label className="flex flex-col items-center gap-4 cursor-pointer">
                       <div className="h-24 w-24 rounded-2xl bg-slate-100 flex items-center justify-center">
                         <Upload className="h-12 w-12 text-slate-400" />
@@ -217,32 +295,44 @@ function Customize() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <ReactCrop
-                        crop={crop}
-                        onChange={(c) => setCrop(c)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                        aspect={800 / 600}
-                      >
-                        <img
-                          ref={imgRef}
-                          src={selectedImage}
-                          alt="Upload"
-                          className="max-w-full"
-                        />
-                      </ReactCrop>
+                <>
+                  <Card className="flex-1 overflow-hidden">
+                    <CardContent className="pt-4 h-full flex items-center justify-center">
+                      <div className="max-h-full overflow-auto">
+                        <ReactCrop
+                          crop={crop}
+                          onChange={(c) => setCrop(c)}
+                          onComplete={(c) => setCompletedCrop(c)}
+                          aspect={isPortrait ? 600 / 800 : 800 / 600}
+                        >
+                          <img
+                            ref={imgRef}
+                            src={selectedImage}
+                            alt="Upload"
+                            style={{ 
+                              maxHeight: 'calc(100vh - 300px)',
+                              width: 'auto'
+                            }}
+                          />
+                        </ReactCrop>
+                      </div>
                     </CardContent>
                   </Card>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-3 flex-shrink-0">
                     <Button
                       variant="outline"
                       onClick={() => setSelectedImage(null)}
-                      className="flex-1"
                     >
                       Neues Bild
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={rotateImage}
+                      className="flex items-center gap-2"
+                    >
+                      <RotateCw className="h-4 w-4" />
+                      {isPortrait ? 'Querformat' : 'Hochformat'}
                     </Button>
                     <Button
                       onClick={async () => {
@@ -258,79 +348,80 @@ function Customize() {
                       Weiter
                     </Button>
                   </div>
-                </div>
+                </>
               )}
             </div>
           )}
 
           {step === 2 && (
-            <div className="space-y-8 min-h-[calc(100vh-12rem)]">
-              <div className="text-center">
-                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            <div className="flex flex-col h-full space-y-4">
+              <div className="text-center flex-shrink-0">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
                   Wählen Sie Ihre Rahmenfarbe
                 </h1>
-                <p className="text-base md:text-lg text-slate-600">
+                <p className="text-sm md:text-base text-slate-600">
                   Schwarz oder Weiß - Ihre Wahl
                 </p>
               </div>
 
-              <div className="mb-8">
-                <img 
-                  src={frameColorsImg} 
-                  alt="Rahmenfarben Optionen" 
-                  className="w-full max-w-3xl mx-auto rounded-2xl shadow-xl"
-                />
+              <div className="flex-1 overflow-y-auto space-y-4">
+                <div className="flex justify-center">
+                  <img 
+                    src={frameColorsImg} 
+                    alt="Rahmenfarben Optionen" 
+                    className="w-full max-w-2xl rounded-xl shadow-lg"
+                  />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                  <Card
+                    className={`cursor-pointer border-2 transition-all ${
+                      frameColor === 'black'
+                        ? 'border-slate-900 shadow-lg'
+                        : 'border-slate-200 hover:border-slate-300'
+                    }`}
+                    onClick={() => setFrameColor('black')}
+                  >
+                    <CardContent className="pt-6 pb-6">
+                      <div className="aspect-square bg-slate-900 rounded-lg mb-3 flex items-center justify-center relative">
+                        {frameColor === 'black' && (
+                          <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+                            <Check className="h-5 w-5 text-slate-900" />
+                          </div>
+                        )}
+                        <Frame className="h-12 w-12 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-center">Schwarzer Rahmen</h3>
+                    </CardContent>
+                  </Card>
+
+                  <Card
+                    className={`cursor-pointer border-2 transition-all ${
+                      frameColor === 'white'
+                        ? 'border-slate-900 shadow-lg'
+                        : 'border-slate-200 hover:border-slate-300'
+                    }`}
+                    onClick={() => setFrameColor('white')}
+                  >
+                    <CardContent className="pt-6 pb-6">
+                      <div className="aspect-square bg-white border-2 border-slate-200 rounded-lg mb-3 flex items-center justify-center relative">
+                        {frameColor === 'white' && (
+                          <div className="absolute top-2 right-2 bg-slate-900 rounded-full p-1">
+                            <Check className="h-5 w-5 text-white" />
+                          </div>
+                        )}
+                        <Frame className="h-12 w-12 text-slate-900" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-center">Weißer Rahmen</h3>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                <Card
-                  className={`cursor-pointer border-2 transition-all ${
-                    frameColor === 'black'
-                      ? 'border-slate-900 shadow-lg'
-                      : 'border-slate-200 hover:border-slate-300'
-                  }`}
-                  onClick={() => setFrameColor('black')}
-                >
-                  <CardContent className="pt-8 pb-8">
-                    <div className="aspect-square bg-slate-900 rounded-lg mb-4 flex items-center justify-center relative">
-                      {frameColor === 'black' && (
-                        <div className="absolute top-2 right-2 bg-white rounded-full p-1">
-                          <Check className="h-5 w-5 text-slate-900" />
-                        </div>
-                      )}
-                      <Frame className="h-16 w-16 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-center">Schwarzer Rahmen</h3>
-                  </CardContent>
-                </Card>
-
-                <Card
-                  className={`cursor-pointer border-2 transition-all ${
-                    frameColor === 'white'
-                      ? 'border-slate-900 shadow-lg'
-                      : 'border-slate-200 hover:border-slate-300'
-                  }`}
-                  onClick={() => setFrameColor('white')}
-                >
-                  <CardContent className="pt-8 pb-8">
-                    <div className="aspect-square bg-white border-2 border-slate-200 rounded-lg mb-4 flex items-center justify-center relative">
-                      {frameColor === 'white' && (
-                        <div className="absolute top-2 right-2 bg-slate-900 rounded-full p-1">
-                          <Check className="h-5 w-5 text-white" />
-                        </div>
-                      )}
-                      <Frame className="h-16 w-16 text-slate-900" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-center">Weißer Rahmen</h3>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="flex gap-4">
+              <div className="flex gap-3 flex-shrink-0">
                 <Button
                   variant="outline"
                   onClick={() => setStep(1)}
-                  className="flex-1"
                 >
                   Zurück
                 </Button>
@@ -353,8 +444,6 @@ function Customize() {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
