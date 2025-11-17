@@ -19,7 +19,6 @@ function Customize() {
   const [step, setStep] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob | null>(null);
-  const [rotation, setRotation] = useState(0);
   const [isPortrait, setIsPortrait] = useState(false);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -39,7 +38,6 @@ function Customize() {
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result as string);
-        setRotation(0);
         setIsPortrait(false);
       };
       reader.readAsDataURL(file);
@@ -47,7 +45,6 @@ function Customize() {
   };
 
   const rotateImage = () => {
-    setRotation((prev) => (prev + 90) % 360);
     const newIsPortrait = !isPortrait;
     setIsPortrait(newIsPortrait);
     
@@ -94,17 +91,13 @@ function Customize() {
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
 
-    // Set canvas dimensions based on rotation
-    const outputWidth = 800;
-    const outputHeight = 600;
+    // Set canvas dimensions based on portrait/landscape orientation
+    // Portrait: 600x800, Landscape: 800x600
+    const outputWidth = isPortrait ? 600 : 800;
+    const outputHeight = isPortrait ? 800 : 600;
     
-    if (rotation === 90 || rotation === 270) {
-      canvas.width = outputHeight;
-      canvas.height = outputWidth;
-    } else {
-      canvas.width = outputWidth;
-      canvas.height = outputHeight;
-    }
+    canvas.width = outputWidth;
+    canvas.height = outputHeight;
 
     const ctx = canvas.getContext('2d');
 
@@ -112,38 +105,18 @@ function Customize() {
       return Promise.reject(new Error('No 2d context'));
     }
 
-    // Calculate center for rotation
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    // Apply rotation transformation
-    ctx.translate(centerX, centerY);
-    ctx.rotate((rotation * Math.PI) / 180);
-
-    // Draw image with proper dimensions based on rotation
-    let drawWidth, drawHeight, drawX, drawY;
-    
-    if (rotation === 90 || rotation === 270) {
-      drawWidth = outputHeight;
-      drawHeight = outputWidth;
-    } else {
-      drawWidth = outputWidth;
-      drawHeight = outputHeight;
-    }
-    
-    drawX = -drawWidth / 2;
-    drawY = -drawHeight / 2;
-
+    // No rotation applied - the image is already in the correct orientation
+    // based on isPortrait. We just crop and resize.
     ctx.drawImage(
       image,
       crop.x * scaleX,
       crop.y * scaleY,
       crop.width * scaleX,
       crop.height * scaleY,
-      drawX,
-      drawY,
-      drawWidth,
-      drawHeight
+      0,
+      0,
+      outputWidth,
+      outputHeight
     );
 
     return new Promise((resolve, reject) => {
@@ -266,7 +239,7 @@ function Customize() {
                   Laden Sie Ihr Bild hoch
                 </h1>
                 <p className="text-sm md:text-base text-slate-600">
-                  Wählen Sie den gewünschten Ausschnitt (800x600 Pixel)
+                  Wählen Sie den gewünschten Ausschnitt ({isPortrait ? '600x800' : '800x600'} Pixel)
                 </p>
               </div>
 
