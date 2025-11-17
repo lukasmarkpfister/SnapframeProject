@@ -6,7 +6,7 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { createClient } from '@supabase/supabase-js';
 import { Link } from 'react-router-dom';
-import frameColorsImg from '../static/framecolors.jpeg';
+import frameColorsImg from '../static/framecolors.webp';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,

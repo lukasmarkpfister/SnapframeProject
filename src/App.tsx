@@ -3,11 +3,11 @@ import { Button } from './components/ui/button';
 import { Card, CardContent } from './components/ui/card';
 import { Sun, Frame, Eye, Sparkles } from 'lucide-react';
 import Footer from './components/Footer';
-import productVisibleImg from './static/productpicvisible.jpeg';
-import productInvisibleImg from './static/productpicinvisible.jpeg';
-import productStackedImg from './static/productblackframestacked.jpeg';
-import productStacked2Img from './static/productblackframestacked2.jpeg';
-import frameColorsImg from './static/framecolors.jpeg';
+import productVisibleImg from './static/productpicvisible.webp';
+import productInvisibleImg from './static/productpicinvisible.webp';
+import productStackedImg from './static/productblackframestacked.webp';
+import productStacked2Img from './static/productblackframestacked2.webp';
+import frameColorsImg from './static/framecolors.webp';
 
 function App() {
   const navigate = useNavigate();
