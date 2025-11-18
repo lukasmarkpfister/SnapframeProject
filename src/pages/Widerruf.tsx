@@ -34,10 +34,10 @@ export default function Widerruf() {
               <div className="bg-slate-50 p-4 rounded-lg mt-4 mb-4">
                 <p className="text-slate-700">
                   <strong>LightPictures Lukas Pfister</strong><br />
-                  [Ihre Straße und Hausnummer]<br />
-                  [Ihre PLZ und Stadt]<br />
+                  Ingeborg-Bachmann-Straße 43<br />
+                  89134 Blaustein<br />
                   Deutschland<br />
-                  E-Mail: widerruf@lightpicture-3d.de
+                  E-Mail: versandhandellukaspfister@gmail.com
                 </p>
               </div>
               <p className="text-slate-700">
@@ -107,9 +107,9 @@ export default function Widerruf() {
                 </p>
                 <div className="border border-slate-300 p-4 text-slate-700 space-y-2 font-mono text-sm">
                   <p>An LightPictures Lukas Pfister</p>
-                  <p>[Ihre Straße und Hausnummer]</p>
-                  <p>[Ihre PLZ und Stadt]</p>
-                  <p>E-Mail: widerruf@lightpicture-3d.de</p>
+                  <p>Ingeborg-Bachmann-Straße 43</p>
+                  <p>89134 Blaustein</p>
+                  <p>E-Mail: versandhandellukaspfister@gmail.com</p>
                   <p className="mt-4">Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)</p>
                   <p className="mt-4">- Bestellt am (*)/erhalten am (*)</p>
                   <p>- Name des/der Verbraucher(s)</p>

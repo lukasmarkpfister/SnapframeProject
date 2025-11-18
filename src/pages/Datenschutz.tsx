@@ -136,7 +136,7 @@ export default function Datenschutz() {
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">9. Kontakt</h2>
               <p className="text-slate-700">
                 Bei Fragen zum Datenschutz können Sie sich jederzeit an uns wenden:<br />
-                E-Mail: datenschutz@lightpicture-3d.de
+                E-Mail: versandhandellukaspfister@gmail.com
               </p>
             </section>
           </div>

@@ -32,7 +32,7 @@ export default function Impressum() {
             <section>
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Kontakt</h2>
               <p className="text-slate-700">
-                E-Mail: info@lightpicture-3d.de
+                E-Mail: versandhandellukaspfister@gmail.com
               </p>
             </section>
 
@@ -47,8 +47,8 @@ export default function Impressum() {
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Verantwortlich für den Inhalt</h2>
               <p className="text-slate-700">
                 Lukas Pfister<br />
-                [Ihre Straße und Hausnummer]<br />
-                [Ihre PLZ und Stadt]
+                Ingeborg-Bachmann-Straße 43<br />
+                89134 Blaustein
               </p>
             </section>
 
