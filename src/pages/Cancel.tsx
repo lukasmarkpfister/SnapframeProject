@@ -47,7 +47,7 @@ export default function Cancel() {
           </div>
 
           <p className="text-xs text-slate-500">
-            Benötigen Sie Hilfe? Kontaktieren Sie uns unter support@lightpicture-3d.de
+            Benötigen Sie Hilfe? Kontaktieren Sie uns unter versandhandellukaspfister@gmail.com
           </p>
         </CardContent>
       </Card>

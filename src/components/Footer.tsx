@@ -50,13 +50,8 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:info@lightpicture-3d.de" className="hover:text-slate-900 transition-colors">
-                  info@lightpicture-3d.de
-                </a>
-              </li>
-              <li>
-                <a href="mailto:support@lightpicture-3d.de" className="hover:text-slate-900 transition-colors">
-                  support@lightpicture-3d.de
+                <a href="mailto:versandhandellukaspfister@gmail.com" className="hover:text-slate-900 transition-colors">
+                  versandhandellukaspfister@gmail.com
                 </a>
               </li>
             </ul>

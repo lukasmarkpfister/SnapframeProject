@@ -121,7 +121,7 @@ Deno.serve(async (req: Request) => {
                   </ul>
                   <p>Wir beginnen umgehend mit der Produktion Ihres personalisierten 3D-Bilderrahmens.</p>
                   <p>Sie erhalten eine weitere E-Mail, sobald Ihre Bestellung versendet wird.</p>
-                  <p>Bei Fragen erreichen Sie uns unter support@lightpicture-3d.de</p>
+                  <p>Bei Fragen erreichen Sie uns unter versandhandellukaspfister@gmail.com</p>
                   <p>Viele Grüße,<br>Ihr LightPicture Team</p>
                 `,
               }),
