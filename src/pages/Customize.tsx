@@ -72,13 +72,7 @@ function Customize() {
             x: x,
             y: y,
           });
-          setCompletedCrop({
-            unit: 'px',
-            x: (img.width * x) / 100,
-            y: (img.height * y) / 100,
-            width: (img.width * cropWidth) / 100,
-            height: (img.height * cropHeight) / 100
-          });
+          setCompletedCrop(null);
         };
         img.src = reader.result as string;
       };
@@ -365,8 +359,8 @@ function Customize() {
                           setStep(2);
                         }
                       }}
-                      disabled={!acceptedDataPrivacy}
-                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={!completedCrop || !acceptedDataPrivacy}
+                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2"
                     >
                       Weiter
                     </Button>
