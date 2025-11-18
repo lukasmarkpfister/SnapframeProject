@@ -23,7 +23,7 @@ export default function AGB() {
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">1. Geltungsbereich</h2>
               <p className="text-slate-700">
                 Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge über die Lieferung von Waren, 
-                die ein Verbraucher oder Unternehmer (im Folgenden „Kunde") mit LightPicture GmbH (im Folgenden „Verkäufer") 
+                die ein Verbraucher oder Unternehmer (im Folgenden „Kunde") mit LightPictures Lukas Pfister (im Folgenden „Verkäufer") 
                 über die Website lightpicture-3d.de abschließt.
               </p>
             </section>
@@ -62,10 +62,12 @@ export default function AGB() {
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">4. Lieferung</h2>
               <p className="text-slate-700 mb-4">
                 Die Lieferung erfolgt im Regelfall innerhalb von 7-14 Werktagen nach Bestelleingang. Da jedes Produkt 
-                individuell auf Bestellung gefertigt wird, kann die Lieferzeit variieren.
+                individuell auf Bestellung gefertigt wird, kann die Lieferzeit variieren. Der Versand erfolgt 
+                ausschließlich über DHL innerhalb Deutschlands.
               </p>
               <p className="text-slate-700">
-                Der Kunde wird per E-Mail über den Versand und die voraussichtliche Lieferzeit informiert.
+                Der Kunde wird per E-Mail über den Versand und die voraussichtliche Lieferzeit informiert. 
+                Die Versandkosten sind im Produktpreis enthalten.
               </p>
             </section>
 
@@ -98,7 +100,22 @@ export default function AGB() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">8. Bildrechte</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">8. Widerrufsrecht und Ausschluss des Widerrufsrechts</h2>
+              <p className="text-slate-700 mb-4">
+                <strong>Wichtiger Hinweis:</strong> Für die auf dieser Website angebotenen individualisierten Produkte 
+                besteht gemäß § 312g Abs. 2 Nr. 1 BGB <strong>kein Widerrufsrecht</strong>.
+              </p>
+              <p className="text-slate-700 mb-4">
+                Da jedes Produkt nach Ihren individuellen Vorgaben (persönliches Bild, Rahmenfarbe) angefertigt wird 
+                und eindeutig auf Ihre persönlichen Bedürfnisse zugeschnitten ist, ist ein Widerruf nach Produktionsbeginn 
+                ausgeschlossen. Mit der Bestellung und Bestätigung der Datenschutzerklärung erklären Sie sich ausdrücklich 
+                damit einverstanden, dass die Produktion Ihres individualisierten Produkts unmittelbar nach Zahlungseingang 
+                beginnt und Sie auf Ihr Widerrufsrecht verzichten.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">9. Bildrechte</h2>
               <p className="text-slate-700 mb-4">
                 Der Kunde versichert, dass er über alle notwendigen Rechte an den hochgeladenen Bildern verfügt und 
                 dass durch die Verwendung keine Rechte Dritter verletzt werden.
@@ -110,7 +127,7 @@ export default function AGB() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">9. Haftung</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">10. Haftung</h2>
               <p className="text-slate-700">
                 Der Verkäufer haftet unbeschränkt für Vorsatz und grobe Fahrlässigkeit. Bei leichter Fahrlässigkeit 
                 haftet der Verkäufer nur bei Verletzung wesentlicher Vertragspflichten (Kardinalpflichten).
@@ -118,7 +135,7 @@ export default function AGB() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">10. Streitbeilegung</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">11. Streitbeilegung</h2>
               <p className="text-slate-700">
                 Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die unter 
                 <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
@@ -128,7 +145,7 @@ export default function AGB() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">11. Schlussbestimmungen</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">12. Schlussbestimmungen</h2>
               <p className="text-slate-700">
                 Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts. 
                 Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, bleibt die Wirksamkeit der 

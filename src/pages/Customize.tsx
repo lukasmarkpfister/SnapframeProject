@@ -30,6 +30,7 @@ function Customize() {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const [frameColor, setFrameColor] = useState<FrameColor>('black');
   const [loading, setLoading] = useState(false);
+  const [acceptedDataPrivacy, setAcceptedDataPrivacy] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -344,17 +345,41 @@ function Customize() {
                     </Button>
                     <Button
                       onClick={async () => {
+                        if (!acceptedDataPrivacy) {
+                          alert('Bitte bestätigen Sie die Datenschutzerklärung');
+                          return;
+                        }
                         if (imgRef.current && completedCrop) {
                           const blob = await getCroppedImg(imgRef.current, completedCrop);
                           setCroppedImageBlob(blob);
                           setStep(2);
                         }
                       }}
-                      disabled={!completedCrop}
+                      disabled={!completedCrop || !acceptedDataPrivacy}
                       className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2"
                     >
                       Weiter
                     </Button>
+                  </div>
+
+                  {/* Datenschutz-Checkbox */}
+                  <div className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <input
+                      type="checkbox"
+                      id="dataPrivacy"
+                      checked={acceptedDataPrivacy}
+                      onChange={(e) => setAcceptedDataPrivacy(e.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-slate-300"
+                    />
+                    <label htmlFor="dataPrivacy" className="text-sm text-slate-700 cursor-pointer">
+                      Ich bin damit einverstanden, dass mein hochgeladenes Bild zur Herstellung des Produkts gespeichert 
+                      und verarbeitet wird. Die Daten werden ausschließlich zur Auftragsabwicklung verwendet und nach 
+                      Ablauf der gesetzlichen Aufbewahrungsfristen gelöscht. Weitere Informationen finden Sie in unserer{' '}
+                      <Link to="/datenschutz" className="text-blue-600 hover:underline">
+                        Datenschutzerklärung
+                      </Link>
+                      .
+                    </label>
                   </div>
                 </>
               )}

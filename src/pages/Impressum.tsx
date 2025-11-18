@@ -22,9 +22,9 @@ export default function Impressum() {
             <section>
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Angaben gemäß § 5 TMG</h2>
               <p className="text-slate-700">
-                LightPicture GmbH<br />
-                Musterstraße 123<br />
-                12345 Musterstadt<br />
+                LightPictures Lukas Pfister<br />
+                Ingeborg-Bachmann-Straße 43<br />
+                89134 Blaustein<br />
                 Deutschland
               </p>
             </section>
@@ -32,34 +32,23 @@ export default function Impressum() {
             <section>
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Kontakt</h2>
               <p className="text-slate-700">
-                Telefon: +49 (0) 123 456789<br />
                 E-Mail: info@lightpicture-3d.de
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Registereintrag</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Kleinunternehmer gemäß § 19 UStG</h2>
               <p className="text-slate-700">
-                Eintragung im Handelsregister<br />
-                Registergericht: Amtsgericht Musterstadt<br />
-                Registernummer: HRB 12345
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Umsatzsteuer-ID</h2>
-              <p className="text-slate-700">
-                Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br />
-                DE123456789
+                Als Kleinunternehmer im Sinne von § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-slate-900 mb-4">Verantwortlich für den Inhalt</h2>
               <p className="text-slate-700">
-                Max Mustermann<br />
-                Musterstraße 123<br />
-                12345 Musterstadt
+                Lukas Pfister<br />
+                [Ihre Straße und Hausnummer]<br />
+                [Ihre PLZ und Stadt]
               </p>
             </section>
 
