@@ -39,8 +39,19 @@ Deno.serve(async (req: Request) => {
       const orderId = session.metadata?.order_id;
       const customerEmail = session.customer_details?.email || session.customer_email;
       const customerName = session.customer_details?.name;
-      const shippingAddress = session.shipping_details?.address;
+      // Try shipping_details first, fall back to customer_details.address for Apple Pay
+      const shippingAddress = session.shipping_details?.address || session.customer_details?.address;
       const customerPhone = session.customer_details?.phone;
+
+      // Debug log to see what Stripe is sending
+      console.log("Stripe session data:", JSON.stringify({
+        customerEmail,
+        customerName,
+        customerPhone,
+        shippingDetails: session.shipping_details,
+        customerDetails: session.customer_details,
+        addressUsed: shippingAddress
+      }, null, 2));
 
       if (orderId) {
         // Update order with payment info, customer details and shipping address from Stripe
