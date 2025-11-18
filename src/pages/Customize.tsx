@@ -46,7 +46,7 @@ function Customize() {
           setSelectedImage(reader.result as string);
           
           // Set initial crop based on detected orientation
-          const targetAspect = detectedIsPortrait ? (600 / 800) : (800 / 600);
+          const targetAspect = detectedIsPortrait ? (600 / 900) : (900 / 600);
           const imgAspect = img.width / img.height;
           
           let cropWidth, cropHeight;
@@ -72,7 +72,13 @@ function Customize() {
             x: x,
             y: y,
           });
-          setCompletedCrop(null);
+          setCompletedCrop({
+            unit: 'px',
+            x: (img.width * x) / 100,
+            y: (img.height * y) / 100,
+            width: (img.width * cropWidth) / 100,
+            height: (img.height * cropHeight) / 100
+          });
         };
         img.src = reader.result as string;
       };
@@ -92,7 +98,7 @@ function Customize() {
       const imgAspect = imgWidth / imgHeight;
       
       // Target aspect ratios
-      const targetAspect = newIsPortrait ? (600 / 800) : (800 / 600); // 0.75 or 1.333
+      const targetAspect = newIsPortrait ? (600 / 900) : (900 / 600); // 0.667 or 1.5
       
       let cropWidth, cropHeight;
       
@@ -128,9 +134,9 @@ function Customize() {
     const scaleY = image.naturalHeight / image.height;
 
     // Set canvas dimensions based on portrait/landscape orientation
-    // Portrait: 600x800, Landscape: 800x600
-    const outputWidth = isPortrait ? 600 : 800;
-    const outputHeight = isPortrait ? 800 : 600;
+    // Portrait: 600x900 (2:3), Landscape: 900x600 (3:2)
+    const outputWidth = isPortrait ? 600 : 900;
+    const outputHeight = isPortrait ? 900 : 600;
     
     canvas.width = outputWidth;
     canvas.height = outputHeight;
@@ -275,7 +281,7 @@ function Customize() {
                   Laden Sie Ihr Bild hoch
                 </h1>
                 <p className="text-xs md:text-sm lg:text-base text-slate-600">
-                  Wählen Sie den gewünschten Ausschnitt ({isPortrait ? '600x800' : '800x600'} Pixel)
+                  Wählen Sie den gewünschten Ausschnitt
                 </p>
               </div>
 
@@ -305,25 +311,29 @@ function Customize() {
                 </Card>
               ) : (
                 <>
-                  <Card className="flex-1 overflow-hidden">
-                    <CardContent className="pt-2 md:pt-4 h-full flex items-center justify-center overflow-hidden">
-                      <ReactCrop
-                        crop={crop}
-                        onChange={(c) => setCrop(c)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                        aspect={isPortrait ? 600 / 800 : 800 / 600}
-                      >
-                        <img
-                          ref={imgRef}
-                          src={selectedImage}
-                          alt="Upload"
-                          style={{ 
-                            maxHeight: 'calc(100vh - 250px)',
-                            width: 'auto',
-                            touchAction: 'none'
-                          }}
-                        />
-                      </ReactCrop>
+                  <Card className="flex-1 min-h-0 border-0 shadow-none bg-transparent">
+                    <CardContent className="p-0 h-full flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ReactCrop
+                          crop={crop}
+                          onChange={(c) => setCrop(c)}
+                          onComplete={(c) => setCompletedCrop(c)}
+                          aspect={isPortrait ? 600 / 900 : 900 / 600}
+                        >
+                          <img
+                            ref={imgRef}
+                            src={selectedImage}
+                            alt="Upload"
+                            style={{ 
+                              maxHeight: 'calc(100vh - 380px)',
+                              maxWidth: '100%',
+                              height: 'auto',
+                              width: 'auto',
+                              touchAction: 'none'
+                            }}
+                          />
+                        </ReactCrop>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -355,8 +365,8 @@ function Customize() {
                           setStep(2);
                         }
                       }}
-                      disabled={!completedCrop || !acceptedDataPrivacy}
-                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2"
+                      disabled={!acceptedDataPrivacy}
+                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Weiter
                     </Button>
