@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from './components/ui/button';
 import { Card, CardContent } from './components/ui/card';
 import { Sun, Frame, Eye, Sparkles, Lightbulb, Heart, Baby, Dog, Car, Camera } from 'lucide-react';
@@ -18,31 +18,6 @@ function App() {
     navigate('/customize');
   };
 
-  useEffect(() => {
-    // Kleine Verzögerung, damit die Animationen beim ersten Laden sichtbar sind
-    const timer = setTimeout(() => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      }, observerOptions);
-
-      const elements = document.querySelectorAll('.fade-in-section');
-      elements.forEach(el => observer.observe(el));
-
-      return () => observer.disconnect();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
@@ -58,7 +33,7 @@ function App() {
       </header>
 
       <main className="w-full">
-        <section className="w-full px-4 py-16 md:py-24 lg:py-32 fade-in-section">
+        <section className="w-full px-4 py-16 md:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white text-sm mb-6">
               <Sparkles className="h-4 w-4" />
@@ -86,7 +61,8 @@ function App() {
           </div>
         </section>
 
-        <section className="hidden md:block w-full px-4 py-12 md:py-16 fade-in-section">
+        {/* Interactive Image Section - Mobile: only image, Desktop: image + text */}
+        <section className="w-full px-4 py-12 md:py-16">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Bild mit Light Button */}
@@ -121,8 +97,8 @@ function App() {
                 </div>
               </div>
 
-              {/* Text Content */}
-              <div className="space-y-6">
+              {/* Text Content - Hidden on mobile */}
+              <div className="hidden md:block space-y-6">
                 <div>
                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
                     Erleben Sie den Wow-Effekt
@@ -177,7 +153,7 @@ function App() {
           </div>
         </section>
 
-        <section className="w-full px-4 py-16 md:py-20 fade-in-section">
+        <section className="w-full px-4 py-16 md:py-20">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
@@ -189,7 +165,7 @@ function App() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12">
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-1">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Frame className="h-8 w-8 text-white" />
@@ -201,7 +177,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-2">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Sun className="h-8 w-8 text-white" />
@@ -213,7 +189,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-3">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Eye className="h-8 w-8 text-white" />
@@ -245,7 +221,7 @@ function App() {
           </div>
         </section>
 
-        <section className="w-full px-4 py-16 md:py-20 bg-slate-50 fade-in-section">
+        <section className="w-full px-4 py-16 md:py-20 bg-slate-50 ">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
@@ -257,7 +233,7 @@ function App() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-1">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Heart className="h-8 w-8 text-white" />
@@ -269,7 +245,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-2">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Camera className="h-8 w-8 text-white" />
@@ -281,7 +257,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-3">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Baby className="h-8 w-8 text-white" />
@@ -293,7 +269,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-4">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Dog className="h-8 w-8 text-white" />
@@ -305,7 +281,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-5">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Car className="h-8 w-8 text-white" />
@@ -317,7 +293,7 @@ function App() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg fade-in-section delay-1">
+              <Card className="border-2 hover:border-slate-300 transition-all duration-300 hover:shadow-lg ">
                 <CardContent className="pt-8 pb-8 text-center">
                   <div className="h-16 w-16 rounded-2xl bg-slate-900 flex items-center justify-center mx-auto mb-6">
                     <Sparkles className="h-8 w-8 text-white" />
@@ -332,7 +308,7 @@ function App() {
           </div>
         </section>
 
-        <section className="w-full bg-slate-900 text-white py-16 md:py-20 fade-in-section">
+        <section className="w-full bg-slate-900 text-white py-16 md:py-20 ">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">

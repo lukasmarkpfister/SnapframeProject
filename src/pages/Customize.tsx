@@ -37,8 +37,43 @@ function Customize() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setSelectedImage(reader.result as string);
-        setIsPortrait(false);
+        const img = new Image();
+        img.onload = () => {
+          // Auto-detect orientation based on image dimensions
+          const detectedIsPortrait = img.height > img.width;
+          setIsPortrait(detectedIsPortrait);
+          setSelectedImage(reader.result as string);
+          
+          // Set initial crop based on detected orientation
+          const targetAspect = detectedIsPortrait ? (600 / 800) : (800 / 600);
+          const imgAspect = img.width / img.height;
+          
+          let cropWidth, cropHeight;
+          
+          if (imgAspect > targetAspect) {
+            // Image is wider than target - fit to height
+            cropHeight = 90;
+            cropWidth = (cropHeight * targetAspect * img.height) / img.width;
+          } else {
+            // Image is taller than target - fit to width
+            cropWidth = 90;
+            cropHeight = (cropWidth * img.width) / (targetAspect * img.height);
+          }
+          
+          // Center the crop
+          const x = (100 - cropWidth) / 2;
+          const y = (100 - cropHeight) / 2;
+          
+          setCrop({
+            unit: '%',
+            width: cropWidth,
+            height: cropHeight,
+            x: x,
+            y: y,
+          });
+          setCompletedCrop(null);
+        };
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -340,8 +375,8 @@ function Customize() {
               <div className="flex-1 flex items-center justify-center overflow-hidden py-2 md:py-4">
                 <div className="w-full max-w-5xl mx-auto px-2 md:px-4">
                   <div className="grid md:grid-cols-2 gap-4 md:gap-8 items-center">
-                    {/* Beispielbild nur auf Desktop */}
-                    <div className="hidden md:block">
+                    {/* Rahmenbild auf allen Geräten */}
+                    <div className="flex justify-center">
                       <img 
                         src={frameColorsImg} 
                         alt="Rahmenfarben Beispiel" 

@@ -27,6 +27,14 @@ interface Order {
   created_at: string;
   updated_at: string;
   stripe_session_id: string | null;
+  customer_email: string | null;
+  customer_name: string | null;
+  customer_phone: string | null;
+  shipping_address_line1: string | null;
+  shipping_address_line2: string | null;
+  shipping_postal_code: string | null;
+  shipping_city: string | null;
+  shipping_country: string | null;
 }
 
 export default function Admin() {
@@ -315,6 +323,35 @@ export default function Admin() {
                           <p className="text-sm text-slate-600">
                             Aktualisiert: {new Date(order.updated_at).toLocaleString('de-DE')}
                           </p>
+                        )}
+                        
+                        {/* Customer Information */}
+                        {(order.customer_name || order.customer_email || order.customer_phone) && (
+                          <div className="mt-4 pt-4 border-t">
+                            <p className="text-sm font-medium mb-2">Kundeninformationen:</p>
+                            {order.customer_name && (
+                              <p className="text-sm text-slate-600">👤 {order.customer_name}</p>
+                            )}
+                            {order.customer_email && (
+                              <p className="text-sm text-slate-600">✉️ {order.customer_email}</p>
+                            )}
+                            {order.customer_phone && (
+                              <p className="text-sm text-slate-600">📞 {order.customer_phone}</p>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Shipping Address */}
+                        {order.shipping_address_line1 && (
+                          <div className="mt-4 pt-4 border-t">
+                            <p className="text-sm font-medium mb-2">Lieferadresse:</p>
+                            <div className="text-sm text-slate-600">
+                              <p>{order.shipping_address_line1}</p>
+                              {order.shipping_address_line2 && <p>{order.shipping_address_line2}</p>}
+                              <p>{order.shipping_postal_code} {order.shipping_city}</p>
+                              <p>{order.shipping_country}</p>
+                            </div>
+                          </div>
                         )}
                       </div>
 

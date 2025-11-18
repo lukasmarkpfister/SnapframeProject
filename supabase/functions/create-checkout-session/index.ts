@@ -44,6 +44,9 @@ Deno.serve(async (req: Request) => {
       "mode": "payment",
       "success_url": `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       "cancel_url": `${origin}/cancel`,
+      "billing_address_collection": "required",
+      "shipping_address_collection[allowed_countries][0]": "DE",
+      "phone_number_collection[enabled]": "true",
     };
 
     // Add product image if available

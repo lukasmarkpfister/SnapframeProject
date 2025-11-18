@@ -39,9 +39,11 @@ Deno.serve(async (req: Request) => {
       const orderId = session.metadata?.order_id;
       const customerEmail = session.customer_details?.email || session.customer_email;
       const customerName = session.customer_details?.name;
+      const shippingAddress = session.shipping_details?.address;
+      const customerPhone = session.customer_details?.phone;
 
       if (orderId) {
-        // Update order with payment info and customer email from Stripe
+        // Update order with payment info, customer details and shipping address from Stripe
         const { error } = await supabaseClient
           .from("orders")
           .update({
@@ -49,6 +51,12 @@ Deno.serve(async (req: Request) => {
             stripe_session_id: session.id,
             customer_email: customerEmail || '',
             customer_name: customerName || null,
+            customer_phone: customerPhone || null,
+            shipping_address_line1: shippingAddress?.line1 || null,
+            shipping_address_line2: shippingAddress?.line2 || null,
+            shipping_postal_code: shippingAddress?.postal_code || null,
+            shipping_city: shippingAddress?.city || null,
+            shipping_country: shippingAddress?.country || 'DE',
           })
           .eq("id", orderId);
 
@@ -68,6 +76,16 @@ Deno.serve(async (req: Request) => {
         if (order?.customer_email && order.customer_email !== '') {
           const resendApiKey = Deno.env.get("RESEND_API_KEY");
           if (resendApiKey) {
+            // Format shipping address
+            const shippingAddressHtml = shippingAddress ? `
+              <li><strong>Lieferadresse:</strong><br>
+                ${shippingAddress.line1 || ''}<br>
+                ${shippingAddress.line2 ? shippingAddress.line2 + '<br>' : ''}
+                ${shippingAddress.postal_code || ''} ${shippingAddress.city || ''}<br>
+                ${shippingAddress.country || ''}
+              </li>
+            ` : '';
+
             // Send confirmation to customer
             await fetch("https://api.resend.com/emails", {
               method: "POST",
@@ -88,6 +106,7 @@ Deno.serve(async (req: Request) => {
                     <li><strong>Bestellung-ID:</strong> ${orderId.slice(0, 8)}</li>
                     <li><strong>Rahmenfarbe:</strong> ${order.frame_color === 'black' ? 'Schwarz' : 'Weiß'}</li>
                     <li><strong>Preis:</strong> 29,90 €</li>
+                    ${shippingAddressHtml}
                   </ul>
                   <p>Wir beginnen umgehend mit der Produktion Ihres personalisierten 3D-Bilderrahmens.</p>
                   <p>Sie erhalten eine weitere E-Mail, sobald Ihre Bestellung versendet wird.</p>
@@ -123,6 +142,8 @@ Deno.serve(async (req: Request) => {
                   <ul>
                     <li><strong>Name:</strong> ${order.customer_name || 'Nicht angegeben'}</li>
                     <li><strong>E-Mail:</strong> ${order.customer_email}</li>
+                    ${customerPhone ? `<li><strong>Telefon:</strong> ${customerPhone}</li>` : ''}
+                    ${shippingAddressHtml}
                   </ul>
                   <h2>Bild:</h2>
                   <p><a href="${order.image_url}" target="_blank" style="display: inline-block; padding: 10px 20px; background: #0070f3; color: white; text-decoration: none; border-radius: 5px;">📥 Bild herunterladen</a></p>
