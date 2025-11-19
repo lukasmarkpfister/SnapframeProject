@@ -266,31 +266,31 @@ function Customize() {
         </div>
       </header>
 
-      <main className="flex-1 w-full px-2 md:px-4 py-3 md:py-6 overflow-hidden">
-        <div className="max-w-5xl mx-auto h-full overflow-hidden">
+      <main className="flex-1 w-full px-2 md:px-4 py-2 md:py-4 overflow-hidden flex flex-col">
+        <div className="max-w-5xl mx-auto w-full h-full overflow-hidden flex flex-col">
           {step === 1 && (
-            <div className="flex flex-col h-full space-y-3 md:space-y-4 overflow-hidden">
+            <div className="flex flex-col h-full gap-2 md:gap-3 overflow-hidden">
               <div className="text-center flex-shrink-0">
-                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 mb-1 md:mb-2">
+                <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 md:mb-1">
                   Laden Sie Ihr Bild hoch
                 </h1>
-                <p className="text-xs md:text-sm lg:text-base text-slate-600">
+                <p className="text-xs md:text-sm text-slate-600">
                   Wählen Sie den gewünschten Ausschnitt
                 </p>
               </div>
 
               {!selectedImage ? (
-                <Card className="border-2 border-dashed flex-1 flex items-center justify-center">
-                  <CardContent className="py-8 md:py-12">
-                    <label className="flex flex-col items-center gap-3 md:gap-4 cursor-pointer">
-                      <div className="h-16 w-16 md:h-24 md:w-24 rounded-2xl bg-slate-100 flex items-center justify-center">
-                        <Upload className="h-8 w-8 md:h-12 md:w-12 text-slate-400" />
+                <Card className="border-2 border-dashed flex-1 flex items-center justify-center min-h-0">
+                  <CardContent className="py-4 md:py-8">
+                    <label className="flex flex-col items-center gap-2 md:gap-3 cursor-pointer">
+                      <div className="h-12 w-12 md:h-20 md:w-20 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <Upload className="h-6 w-6 md:h-10 md:w-10 text-slate-400" />
                       </div>
                       <div className="text-center">
-                        <p className="text-base md:text-lg font-semibold text-slate-900">
+                        <p className="text-sm md:text-base font-semibold text-slate-900">
                           Klicken Sie zum Hochladen
                         </p>
-                        <p className="text-xs md:text-sm text-slate-500 mt-1">
+                        <p className="text-xs text-slate-500 mt-0.5">
                           PNG, JPG bis zu 10MB
                         </p>
                       </div>
@@ -305,85 +305,85 @@ function Customize() {
                 </Card>
               ) : (
                 <>
-                  <Card className="flex-1 min-h-0 border-0 shadow-none bg-transparent">
-                    <CardContent className="p-0 h-full flex items-center justify-center">
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ReactCrop
-                          crop={crop}
-                          onChange={(c) => setCrop(c)}
-                          onComplete={(c) => setCompletedCrop(c)}
-                          aspect={isPortrait ? 600 / 900 : 900 / 600}
-                        >
-                          <img
-                            ref={imgRef}
-                            src={selectedImage}
-                            alt="Upload"
-                            style={{ 
-                              maxHeight: 'calc(100vh - 380px)',
-                              maxWidth: '100%',
-                              height: 'auto',
-                              width: 'auto',
-                              touchAction: 'none'
-                            }}
-                          />
-                        </ReactCrop>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <div className="flex gap-2 md:gap-3 flex-shrink-0 flex-wrap">
-                    <Button
-                      variant="outline"
-                      onClick={() => setSelectedImage(null)}
-                      className="text-base md:text-sm px-5 py-3 md:py-2"
-                    >
-                      Neues Bild
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={rotateImage}
-                      className="flex items-center gap-2 text-base md:text-sm px-5 py-3 md:py-2"
-                    >
-                      <RotateCw className="h-5 w-5 md:h-4 md:w-4" />
-                      {isPortrait ? 'Querformat' : 'Hochformat'}
-                    </Button>
-                    <Button
-                      onClick={async () => {
-                        if (!acceptedDataPrivacy) {
-                          alert('Bitte bestätigen Sie die Datenschutzerklärung');
-                          return;
-                        }
-                        if (imgRef.current && completedCrop) {
-                          const blob = await getCroppedImg(imgRef.current, completedCrop);
-                          setCroppedImageBlob(blob);
-                          setStep(2);
-                        }
-                      }}
-                      disabled={!completedCrop || !acceptedDataPrivacy}
-                      className="flex-1 min-w-[120px] bg-slate-900 hover:bg-slate-800 text-base md:text-sm px-5 py-3 md:py-2"
-                    >
-                      Weiter
-                    </Button>
+                  <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                    <div className="flex-1 min-h-0 flex items-center justify-center">
+                      <ReactCrop
+                        crop={crop}
+                        onChange={(c) => setCrop(c)}
+                        onComplete={(c) => setCompletedCrop(c)}
+                        aspect={isPortrait ? 600 / 900 : 900 / 600}
+                        locked={false}
+                      >
+                        <img
+                          ref={imgRef}
+                          src={selectedImage}
+                          alt="Upload"
+                          style={{ 
+                            maxHeight: 'calc(100vh - 300px)',
+                            maxWidth: '100%',
+                            height: 'auto',
+                            width: 'auto',
+                            touchAction: 'none'
+                          }}
+                        />
+                      </ReactCrop>
+                    </div>
                   </div>
 
-                  {/* Datenschutz-Checkbox */}
-                  <div className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
-                    <input
-                      type="checkbox"
-                      id="dataPrivacy"
-                      checked={acceptedDataPrivacy}
-                      onChange={(e) => setAcceptedDataPrivacy(e.target.checked)}
-                      className="mt-1 h-4 w-4 rounded border-slate-300"
-                    />
-                    <label htmlFor="dataPrivacy" className="text-sm text-slate-700 cursor-pointer">
-                      Ich bin damit einverstanden, dass mein hochgeladenes Bild zur Herstellung des Produkts gespeichert 
-                      und verarbeitet wird. Die Daten werden ausschließlich zur Auftragsabwicklung verwendet und nach 
-                      Ablauf der gesetzlichen Aufbewahrungsfristen gelöscht. Weitere Informationen finden Sie in unserer{' '}
-                      <Link to="/datenschutz" className="text-blue-600 hover:underline">
-                        Datenschutzerklärung
-                      </Link>
-                      .
-                    </label>
+                  <div className="flex gap-1.5 md:gap-2 flex-shrink-0 flex-col">
+                    {/* Datenschutz-Checkbox - über dem Button */}
+                    <div className="flex items-start gap-2 bg-slate-50 p-2.5 md:p-3 rounded-lg border border-slate-200 text-xs md:text-sm">
+                      <input
+                        type="checkbox"
+                        id="dataPrivacy"
+                        checked={acceptedDataPrivacy}
+                        onChange={(e) => setAcceptedDataPrivacy(e.target.checked)}
+                        className="mt-0.5 h-3.5 w-3.5 md:h-4 md:w-4 rounded border-slate-300 flex-shrink-0"
+                      />
+                      <label htmlFor="dataPrivacy" className="text-slate-700 cursor-pointer leading-snug">
+                        Ich bin damit einverstanden, dass mein Bild zur Herstellung gespeichert wird. Weitere Informationen in der{' '}
+                        <Link to="/datenschutz" className="text-blue-600 hover:underline font-semibold">
+                          Datenschutzerklärung
+                        </Link>
+                        .
+                      </label>
+                    </div>
+
+                    <div className="flex gap-1.5 md:gap-2 flex-wrap">
+                      <Button
+                        variant="outline"
+                        onClick={() => setSelectedImage(null)}
+                        className="text-xs md:text-sm px-3 md:px-4 py-2 md:py-2"
+                      >
+                        Neues Bild
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={rotateImage}
+                        className="flex items-center gap-1.5 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2"
+                      >
+                        <RotateCw className="h-4 w-4 md:h-4 md:w-4" />
+                        <span className="hidden sm:inline">{isPortrait ? 'Querformat' : 'Hochformat'}</span>
+                        <span className="sm:hidden">{isPortrait ? 'Quer' : 'Hoch'}</span>
+                      </Button>
+                      <Button
+                        onClick={async () => {
+                          if (!acceptedDataPrivacy) {
+                            alert('Bitte bestätigen Sie die Datenschutzerklärung');
+                            return;
+                          }
+                          if (imgRef.current && completedCrop) {
+                            const blob = await getCroppedImg(imgRef.current, completedCrop);
+                            setCroppedImageBlob(blob);
+                            setStep(2);
+                          }
+                        }}
+                        disabled={!acceptedDataPrivacy}
+                        className="flex-1 min-w-[80px] bg-slate-900 hover:bg-slate-800 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2"
+                      >
+                        Weiter
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
